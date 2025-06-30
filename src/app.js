@@ -18,11 +18,11 @@ const app = express();
 // Configurar asociaciones entre modelos
 setupAssociations();
 
-// Configuración de CORS para desarrollo local
+// Configuración de CORS - ACTUALIZADO
 const corsOptions = {
   origin: [
-    'http://localhost:3000', // Frontend local
-    'https://lab15-xl5y.onrender.com', // Frontend desplegado
+    'http://localhost:3000', // Frontend local para desarrollo
+    'https://lab15-front-amno.onrender.com', // ✅ Nueva URL del frontend desplegado
   ],
   credentials: true,
   optionsSuccessStatus: 200
