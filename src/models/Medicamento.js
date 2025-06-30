@@ -37,23 +37,19 @@ const Medicamento = sequelize.define('Medicamento', {
   },
   CodTipoMed: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: true,
+    references: {
+      model: 'TipoMedicamento',
+      key: 'CodTipoMed'
+    }
   },
   Marca: {
     type: DataTypes.STRING(100),
     allowNull: true
-  },
-  CodOrdenCompra: {
-    type: DataTypes.INTEGER,
-    allowNull: true
-  },
-  CodEspec: {
-    type: DataTypes.INTEGER,
-    allowNull: true
   }
 }, {
   tableName: 'Medicamento',
-  timestamps: false // No usar createdAt/updatedAt
+  timestamps: false
 });
 
 module.exports = Medicamento;

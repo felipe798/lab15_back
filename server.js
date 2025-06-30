@@ -7,7 +7,8 @@ const startServer = async () => {
   try {
     await connectDB();
     app.listen(PORT, () => {
-      console.log(`Servidor corriendo en puerto ${PORT}`);
+      console.log(`🚀 Servidor de Farmacia corriendo en puerto ${PORT}`);
+      console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
     });
   } catch (error) {
     console.error('Error iniciando servidor:', error);

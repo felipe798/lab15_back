@@ -1,11 +1,17 @@
 const Medicamento = require('../models/Medicamento');
+const TipoMedicamento = require('../models/TipoMedicamento');
 
 const medicamentoController = {
-  // Obtener todos - SÚPER FÁCIL!
+  // Obtener todos
   async getAll(req, res) {
     try {
       const medicamentos = await Medicamento.findAll({
-        order: [['CodMedicamento', 'ASC']]
+        order: [['CodMedicamento', 'ASC']],
+        include: [{
+          model: TipoMedicamento,
+          as: 'tipoMedicamento',
+          attributes: ['CodTipoMed', 'descripcionTipo', 'categoria']
+        }]
       });
       res.json(medicamentos);
     } catch (error) {
@@ -13,10 +19,15 @@ const medicamentoController = {
     }
   },
 
-  // Obtener por ID - SÚPER FÁCIL!
+  // Obtener por ID
   async getById(req, res) {
     try {
-      const medicamento = await Medicamento.findByPk(req.params.id);
+      const medicamento = await Medicamento.findByPk(req.params.id, {
+        include: [{
+          model: TipoMedicamento,
+          as: 'tipoMedicamento'
+        }]
+      });
       if (!medicamento) {
         return res.status(404).json({ error: 'Medicamento no encontrado' });
       }
@@ -26,7 +37,7 @@ const medicamentoController = {
     }
   },
 
-  // Crear - SÚPER FÁCIL!
+  // Crear
   async create(req, res) {
     try {
       const medicamento = await Medicamento.create(req.body);
@@ -36,36 +47,40 @@ const medicamentoController = {
     }
   },
 
-  // Actualizar - SÚPER FÁCIL!
+  // Actualizar
   async update(req, res) {
     try {
       const [updated] = await Medicamento.update(req.body, {
-        where: { CodMedicamento: req.params.id },
-        returning: true
+        where: { CodMedicamento: req.params.id }
       });
-      
+
       if (!updated) {
         return res.status(404).json({ error: 'Medicamento no encontrado' });
       }
-      
-      const medicamento = await Medicamento.findByPk(req.params.id);
+
+      const medicamento = await Medicamento.findByPk(req.params.id, {
+        include: [{
+          model: TipoMedicamento,
+          as: 'tipoMedicamento'
+        }]
+      });
       res.json(medicamento);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   },
 
-  // Eliminar - SÚPER FÁCIL!
+  // Eliminar
   async delete(req, res) {
     try {
       const deleted = await Medicamento.destroy({
         where: { CodMedicamento: req.params.id }
       });
-      
+
       if (!deleted) {
         return res.status(404).json({ error: 'Medicamento no encontrado' });
       }
-      
+
       res.json({ message: 'Medicamento eliminado exitosamente' });
     } catch (error) {
       res.status(500).json({ error: error.message });
